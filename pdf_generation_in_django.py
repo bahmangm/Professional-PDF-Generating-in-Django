@@ -9,6 +9,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import (Table, TableStyle, Paragraph, Spacer, Frame,
                                 PageTemplate, BaseDocTemplate, FrameBreak)
 
+
 class TwoColumnDocTemplate(BaseDocTemplate):
     def __init__(self, filename, **kwargs):
         super().__init__(filename, **kwargs)
@@ -216,3 +217,9 @@ def generate_pdf(pay_slip):
 
     # Return the URL to the PDF
     return os.path.join(settings.MEDIA_URL, pdf_filename)
+
+
+def generate_pay_slip(request, pay_slip_id):
+    pay_slip = PaySlip.objects.get(id=pay_slip_id)
+    pdf_url = generate_pdf(pay_slip)
+    return HttpResponseRedirect(pdf_url)
